@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบแผนที่ท่าเรือคลองผดุงกรุงเกษม</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <nav>
+    <div class="navbar">
+        <div class="nav-logo">Padung</div>
+        
+        <button class="menu-toggle" id="menuToggle" aria-label="เปิดเมนู">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav-warpper" id="navWrapper">
+            <ul>
+                <li><a href="#history">ประวัติ</a></li>
+                <li><a href="#map">แผนที่ท่าเรือ</a></li>
+                <li><a href="#timetable">ตารางเดินเรือ</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <div class="map-container" id="map">
+        <div class="header">
+            <h1>แผนที่เส้นทางเดินเรือคลองผดุงกรุงเกษม</h1>
+            <p style="color: #64748b; font-size: 14px;">คลิกที่ท่าเรือเพื่อดูรายละเอียด</p>
+        </div>
+
+        <svg class="map-svg" viewBox="0 0 900 400">
+            <path class="route-line" d="M 850,70 L 750,70 Q 690,70 630,105 T 500,105 Q 400,105 320,160 T 220,290 Q 200,320 150,350 L 50,350" />
+
+            <g class="pier-node" data-id="1" transform="translate(800, 70)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">1</text>
+                <text class="pier-label" x="-40" y="-22">ท่าเรือหัวลำโพง</text>
+            </g>
+
+            <g class="pier-node" data-id="2" transform="translate(720, 70)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">2</text>
+                <text class="pier-label" x="-35" y="-22">ท่าเรือนพวงศ์</text>
+            </g>
+
+            <g class="pier-node" data-id="3" transform="translate(660, 88)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">3</text>
+                <text class="pier-label" x="-25" y="-22">ท่าเรือยศเส</text>
+            </g>
+
+            <g class="pier-node" data-id="4" transform="translate(580, 105)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">4</text>
+                <text class="pier-label" x="-50" y="-22">ท่าเรือกระทรวงพลังงาน</text>
+            </g>
+
+            <g class="pier-node" data-id="5" transform="translate(450, 105)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">5</text>
+                <text class="pier-label" x="-45" y="28">ท่าเรือแยกหลานหลวง</text>
+            </g>
+
+            <g class="pier-node" data-id="6" transform="translate(325, 155)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">6</text>
+                <text class="pier-label" x="22" y="5">ท่าเรือนครสวรรค์</text>
+            </g>
+
+            <g class="pier-node" data-id="7" transform="translate(250, 230)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">7</text>
+                <text class="pier-label" x="22" y="5">ท่าเรือราชดำเนินนอก</text>
+            </g>
+
+            <g class="pier-node" data-id="8" transform="translate(210, 300)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">8</text>
+                <text class="pier-label" x="22" y="5">ท่าเรือประชาธิปไตย</text>
+            </g>
+
+            <g class="pier-node" data-id="9" transform="translate(140, 350)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">9</text>
+                <text class="pier-label" x="20" y="5">ท่าเรือเทเวศร์</text>
+            </g>
+
+            <g class="pier-node" data-id="10" transform="translate(60, 350)">
+                <circle class="pier-circle" r="14"/>
+                <text class="pier-number">10</text>
+                <text class="pier-label" x="-45" y="-22">ท่าเรือตลาดเทวราช</text>
+            </g>
+        </svg>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <div class="popup-image-container">
+                <img class="popup-image" id="popupImg" src="" alt="ภาพท่าเรือ">
+            </div>
+            <div class="popup-body">
+                <h2 class="popup-title" id="popupName">ชื่อท่าเรือ</h2>
+                <div class="popup-detail" id="popupDetail">
+                    รายละเอียด...
+                </div>
+                <button class="close-btn" id="closeBtn">ปิด</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="his-container" id="history">
+        <img src="./img/padung-his.jpg" alt="">
+        <p>คลองผดุงกรุงเกษมเป็นคลองเมืองชั้นนอกที่ขุดในสมัยพระบาทสมเด็จพระจอมเกล้าเจ้าอยู่หัวระหว่าง พ.ศ. 2394 ถึง พ.ศ. 2395 เริ่มทางทิศเหนือที่วัดสมอแครงหรือวัดเทวราชกุญชร ขนานไปกับคลองบางลำพู-โอ่งอ่าง ตัดผ่านคลองมหานาคจนกลายเป็นย่านการค้าที่สำคัญคือ สี่แยกมหานาค ผ่านวัดวัดหัวลำโพง 
+        วัดท่าเกวียนหรือวัดมหาพฤฒารามไปจนจรดแม่น้ำเจ้าพระยาทางทิศใต้ ระยะทางรวมยาว 5.5 กิโลเมตร จุดสิ้นสุดแม่น้ำเจ้าพระยา แขวงตลาดน้อย เขตสัมพันธวงศ์ และแขวงบางรัก เขตบางรัก</p>
+    </div>
+
+    <div class="timetable-container" id="time">
+    <div class="main-header">
+        <h1>ตารางเดินเรือคลองผดุงกรุงเกษม</h1>
+        <p>Khlong Phadung Krung Kasem Public Boat Timetable</p>
+    </div>
+
+    <!-- ปุ่มแท็บสลับวัน -->
+    <div class="tab-buttons">
+        <button class="tab-btn btn-weekday active" onclick="switchTab('weekday')">วันจันทร์ - ศุกร์ (Monday - Friday)</button>
+        <button class="tab-btn btn-weekend" onclick="switchTab('weekend')">วันเสาร์ - อาทิตย์ / นักขัตฤกษ์ (Weekend / Holiday)</button>
+    </div>
+
+    <!-- แท็บ 1: วันจันทร์ - ศุกร์ -->
+    <div id="weekday" class="tab-content active">
+        <div class="alert-box">
+            ⚠️ หยุดให้บริการเวลา 09:30 u. - 15:30 u. (Out of Service 09:30 - 15:30)
+        </div>
+
+        <!-- ทิศทาง: หัวลำโพง -> ตลาดเทวราช -->
+        <div class="direction-block">
+            <div class="direction-header dir-to-thewarat">
+                🟢 ท่าสถานีรถไฟหัวลำโพง ➡️ ท่าตลาดเทวราช
+            </div>
+            <!-- ช่วงเช้า -->
+            <div class="time-row">
+                <div class="row-label">เช้า (Morning)<br>ออกจากหัวลำโพง</div>
+                <div class="time-grid">
+                    <div class="time-badge">06:00 น.</div><div class="time-badge">06:20 น.</div>
+                    <div class="time-badge">06:40 น.</div><div class="time-badge">07:00 น.</div>
+                    <div class="time-badge">07:20 น.</div><div class="time-badge">07:40 น.</div>
+                    <div class="time-badge">08:00 น.</div><div class="time-badge">08:20 น.</div>
+                    <div class="time-badge">08:40 น.</div><div class="time-badge">09:00 น.</div>
+                </div>
+            </div>
+            <div class="time-row time-row-arrival">
+                <div class="row-label">เวลาถึง<br>ตลาดเทวราช</div>
+                <div class="time-grid">
+                    <div class="time-badge">06:30 น.</div><div class="time-badge">06:50 น.</div>
+                    <div class="time-badge">07:10 น.</div><div class="time-badge">07:30 น.</div>
+                    <div class="time-badge">07:50 น.</div><div class="time-badge">08:10 น.</div>
+                    <div class="time-badge">08:30 น.</div><div class="time-badge">08:50 น.</div>
+                    <div class="time-badge">09:10 น.</div><div class="time-badge">09:30 น.</div>
+                </div>
+            </div>
+            <!-- ช่วงบ่าย -->
+            <div class="time-row" style="border-top: 2px dashed #e2e8f0;">
+                <div class="row-label">บ่าย (Afternoon)<br>ออกจากหัวลำโพง</div>
+                <div class="time-grid">
+                    <div class="time-badge">16:00 น.</div><div class="time-badge">16:20 น.</div>
+                    <div class="time-badge">16:40 น.</div><div class="time-badge">17:00 น.</div>
+                    <div class="time-badge">17:20 น.</div><div class="time-badge">17:40 น.</div>
+                    <div class="time-badge">18:00 น.</div><div class="time-badge">18:20 น.</div>
+                    <div class="time-badge">18:40 น.</div><div class="time-badge">19:00 น.</div>
+                </div>
+            </div>
+            <div class="time-row time-row-arrival">
+                <div class="row-label">เวลาถึง<br>ตลาดเทวราช</div>
+                <div class="time-grid">
+                    <div class="time-badge">16:30 น.</div><div class="time-badge">16:50 น.</div>
+                    <div class="time-badge">17:10 น.</div><div class="time-badge">17:30 น.</div>
+                    <div class="time-badge">17:50 น.</div><div class="time-badge">18:10 น.</div>
+                    <div class="time-badge">18:30 น.</div><div class="time-badge">18:50 น.</div>
+                    <div class="time-badge">19:10 น.</div><div class="time-badge">19:30 น.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ทิศทาง: ตลาดเทวราช -> หัวลำโพง -->
+        <div class="direction-block">
+            <div class="direction-header dir-to-hualamphong">
+                🔵 ท่าตลาดเทวราช ➡️ ท่าสถานีรถไฟหัวลำโพง
+            </div>
+            <!-- ช่วงเช้า -->
+            <div class="time-row">
+                <div class="row-label">เช้า (Morning)<br>ออกจากเทวราช</div>
+                <div class="time-grid">
+                    <div class="time-badge">06:00 น.</div><div class="time-badge">06:20 น.</div>
+                    <div class="time-badge">06:40 น.</div><div class="time-badge">07:00 น.</div>
+                    <div class="time-badge">07:20 น.</div><div class="time-badge">07:40 น.</div>
+                    <div class="time-badge">08:00 น.</div><div class="time-badge">08:20 น.</div>
+                    <div class="time-badge">08:40 น.</div><div class="time-badge">09:00 น.</div>
+                </div>
+            </div>
+            <div class="time-row time-row-arrival">
+                <div class="row-label">เวลาถึง<br>หัวลำโพง</div>
+                <div class="time-grid">
+                    <div class="time-badge">06:30 น.</div><div class="time-badge">06:50 น.</div>
+                    <div class="time-badge">07:10 น.</div><div class="time-badge">07:30 น.</div>
+                    <div class="time-badge">07:50 น.</div><div class="time-badge">08:10 น.</div>
+                    <div class="time-badge">08:30 น.</div><div class="time-badge">08:50 น.</div>
+                    <div class="time-badge">09:10 น.</div><div class="time-badge">09:30 น.</div>
+                </div>
+            </div>
+            <!-- ช่วงบ่าย -->
+            <div class="time-row" style="border-top: 2px dashed #e2e8f0;">
+                <div class="row-label">บ่าย (Afternoon)<br>ออกจากเทวราช</div>
+                <div class="time-grid">
+                    <div class="time-badge">16:00 น.</div><div class="time-badge">16:20 น.</div>
+                    <div class="time-badge">16:40 น.</div><div class="time-badge">17:00 น.</div>
+                    <div class="time-badge">17:20 น.</div><div class="time-badge">17:40 น.</div>
+                    <div class="time-badge">18:00 น.</div><div class="time-badge">18:20 น.</div>
+                    <div class="time-badge">18:40 น.</div><div class="time-badge">19:00 น.</div>
+                </div>
+            </div>
+            <div class="time-row time-row-arrival">
+                <div class="row-label">เวลาถึง<br>หัวลำโพง</div>
+                <div class="time-grid">
+                    <div class="time-badge">16:30 น.</div><div class="time-badge">16:50 น.</div>
+                    <div class="time-badge">17:10 น.</div><div class="time-badge">17:30 น.</div>
+                    <div class="time-badge">17:50 น.</div><div class="time-badge">18:10 น.</div>
+                    <div class="time-badge">18:30 น.</div><div class="time-badge">18:50 น.</div>
+                    <div class="time-badge">19:10 น.</div><div class="time-badge">19:30 น.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- แท็บ 2: วันเสาร์ - อาทิตย์ และวันหยุด -->
+    <div id="weekend" class="tab-content">
+        <div class="direction-block">
+            <div class="direction-header dir-to-thewarat">
+                🟢 ท่าสถานีรถไฟหัวลำโพง ➡️ ท่าตลาดเทวราช (เรือออกทุกชั่วโมง)
+            </div>
+            <div class="time-row">
+                <div class="row-label">เวลาเรือออก<br>Departure</div>
+                <div class="time-grid">
+                    <div class="time-badge">08:00 น.</div><div class="time-badge">09:00 น.</div>
+                    <div class="time-badge">10:00 น.</div><div class="time-badge">11:00 น.</div>
+                    <div class="time-badge">12:00 น.</div><div class="time-badge">13:00 น.</div>
+                    <div class="time-badge">14:00 น.</div><div class="time-badge">15:00 น.</div>
+                    <div class="time-badge">16:00 น.</div><div class="time-badge">17:00 น.</div>
+                    <div class="time-badge">18:00 น.</div><div class="time-badge">19:00 น.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="direction-block">
+            <div class="direction-header dir-to-hualamphong">
+                🔵 ท่าตลาดเทวราช ➡️ ท่าสถานีรถไฟหัวลำโพง (เรือออกทุกชั่วโมง)
+            </div>
+            <div class="time-row">
+                <div class="row-label">เวลาเรือออก<br>Departure</div>
+                <div class="time-grid">
+                    <div class="time-badge">08:00 น.</div><div class="time-badge">09:00 น.</div>
+                    <div class="time-badge">10:00 น.</div><div class="time-badge">11:00 น.</div>
+                    <div class="time-badge">12:00 น.</div><div class="time-badge">13:00 น.</div>
+                    <div class="time-badge">14:00 น.</div><div class="time-badge">15:00 น.</div>
+                    <div class="time-badge">16:00 น.</div><div class="time-badge">17:00 น.</div>
+                    <div class="time-badge">18:00 น.</div><div class="time-badge">19:00 น.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script>
+       const pierData = {
+    1: { 
+        name: "ท่าเรือสถานีรถไฟหัวลำโพง", 
+        image: "https://images.unsplash.com/photo-1629814467010-f1c50cb05c4d?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• เชื่อมต่อรถไฟฟ้า MRT สายสีน้ำเงิน (สถานีหัวลำโพง ทางออก 2)<br>" +
+                "• เชื่อมต่อสถานีรถไฟกรุงเทพ (หัวลำโพง) สำหรับรถไฟชานเมืองและรถไฟทางไกล<br>" +
+                "• จุดเชื่อมต่อป้ายรถประจำทางสาธารณะ<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• เส้นทาง: ต้นสายของเส้นทางเดินเรือคลองผดุงกรุงเกษม<br>" +
+                "• ประเภทเรือ: เรือโดยสารพลังงานไฟฟ้า (EV) 100% ไร้ควัน ไร้เสียง<br>" +
+                "• การรองรับ: มีทางลาดสำหรับผู้พิการและพื้นที่สำหรับวีลแชร์<br>" +
+                "• ความปลอดภัย: มีเสื้อชูชีพประจำเบาะ พร้อมกล้อง CCTV<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    },
+    2: { 
+        name: "ท่าเรือนพวงศ์", 
+        image: "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• จุดเชื่อมต่อทางเดินเลียบคลองผดุงกรุงเกษม<br>" +
+                "• เชื่อมต่อถนนหลวง และถนนไมตรีจิตต์<br>" +
+                "• ใกล้จุดจอดรถโดยสารสาธารณะบริเวณห้าแยกพลับพลาชัย<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• สถานที่ใกล้เคียง: โรงเรียนสายปัญญา ในพระบรมราชินูปถัมภ์<br>" +
+                "• สถานที่ใกล้เคียง: ย่านชุมชนเก่าตรอกสลักหิน และสะพานนพวงศ์<br>" +
+                "• สิ่งอำนวยความสะดวก: มีไฟส่องสว่างเวลากลางคืนและกล้องวงจรปิด<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    },
+    3: { 
+        name: "ท่าเรือยศเส", 
+        image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• เชื่อมต่อพื้นที่ถนนบำรุงเมือง และถนนพลับพลาชัย<br>" +
+                "• มีจุดเรียกบริการรถสาธารณะและตุ๊กตุ๊กบริเวณหน้าโรงพยาบาล<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• สถานที่ใกล้เคียง: โรงพยาบาลหัวเฉียว<br>" +
+                "• สถานที่ใกล้เคียง: วัดเทพศิรินทราวาสราชวรวิหาร และย่านของกินยศเส<br>" +
+                "• สิ่งอำนวยความสะดวก: ทางเดินเท้าเข้า-ออกสะดวก ใกล้แหล่งชุมชน<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    },
+    4: { 
+        name: "ท่าเรือกระทรวงพลังงาน", 
+        image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• เชื่อมต่อป้ายรถประจำทางบริเวณสะพานกษัตริย์ศึก (ถนนพระราม 1)<br>" +
+                "• เชื่อมโยงพื้นที่ระหว่างเขตปทุมวันและเขตป้อมปราบศัตรูพ่าย<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• สถานที่ใกล้เคียง: กระทรวงพลังงาน (อาคาร Energy Complex)<br>" +
+                "• สถานที่ใกล้เคียง: ตลาดโบ๊เบ๊ (โซนสะพานกษัตริย์ศึก) และโรงเรียนวัดสระบัว<br>" +
+                "• สิ่งอำนวยความสะดวก: มีเจ้าหน้าที่ดูแลความปลอดภัย และทางลาดมาตรฐาน<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    },
+    5: { 
+        name: "ท่าเรือแยกหลานหลวง", 
+        image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• จุดเชื่อมต่อรถโดยสารประจำทางบนถนนหลานหลวง (เชื่อมต่อไปยังราชดำเนิน/ปิ่นเกล้า)<br>" +
+                "• เชื่อมโยงเส้นทางเรือคลองแสนแสบ (เดินเท้าไปยังท่าเรือโบ๊เบ๊ ประมาณ 300 เมตร)<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• สถานที่ใกล้เคียง: ตลาดโบ๊เบ๊ทาวเวอร์ (ศูนย์รวมแฟชั่นขายส่งขนาดใหญ่)<br>" +
+                "• สถานที่ใกล้เคียง: วัดสุนทรธรรมทาน (วัดแคนางเลิ้ง)<br>" +
+                "• สิ่งอำนวยความสะดวก: ตัวท่าเรือกว้างขวาง รองรับปริมาณนักช้อปปิ้งได้ดี<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    },
+    6: { 
+        name: "ท่าเรือนครสวรรค์", 
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• เชื่อมต่อถนนนครสวรรค์ และถนนพิษณุโลก<br>" +
+                "• มีจุดจอดรถแท็กซี่และรถสามล้อบริเวณรอบตลาดนางเลิ้ง<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• สถานที่ใกล้เคียง: ตลาดนางเลิ้ง (ตลาดบกแห่งแรกของไทย แหล่งรวมอาหารโบราณ)<br>" +
+                "• สถานที่ใกล้เคียง: ทำเนียบรัฐบาล (ฝั่งทิศใต้)<br>" +
+                "• สิ่งอำนวยความสะดวก: มีป้ายบอกทางวัฒนธรรม แนะนำแหล่งของกินในชุมชน<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    },
+    7: { 
+        name: "ท่าเรือราชดำเนินนอก", 
+        image: "https://images.unsplash.com/photo-1590059392204-62985be093d5?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• จุดเชื่อมต่อป้ายรถประจำทางสายสำคัญบนถนนราชดำเนินนอก<br>" +
+                "• เส้นทางผ่านของรถท่องเที่ยว (Hop-On Hop-Off)<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• สถานที่ใกล้เคียง: สนามมวยราชดำเนิน, ทำเนียบรัฐบาล และกระทรวงคมนาคม<br>" +
+                "• สถานที่ใกล้เคียง: กระทรวงการท่องเที่ยวและกีฬา, โรงเรียนแผนที่ทหาร<br>" +
+                "• สิ่งอำนวยความสะดวก: พื้นที่กว้างขวาง ปลอดภัยด้วยกล้อง CCTV รอบทิศทาง<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    },
+    8: { 
+        name: "ท่าเรือประชาธิปไตย", 
+        image: "https://images.unsplash.com/photo-1627581534033-b4de9586fc2c?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• เชื่อมต่อถนนประชาธิปไตย และถนนกรุงเกษม<br>" +
+                "• สามารถต่อรถประจำทางเพื่อไปยังย่านบางลำพูหรือถนนข้าวสารได้ง่าย<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• สถานที่ใกล้เคียง: วัดมกุฏกษัตริยารามราชวรวิหาร และโรงเรียนมกุฏกษัตริย์<br>" +
+                "• สถานที่ใกล้เคียง: คุรุสภา และกระทรวงศึกษาธิการ<br>" +
+                "• สิ่งอำนวยความสะดวก: บรรยากาศร่มรื่น มีที่นั่งพักคอยบริเวณท่าเรือ<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    },
+    9: { 
+        name: "ท่าเรือเทเวศร์", 
+        image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• เชื่อมต่อป้ายรถประจำทางสายสำคัญบริเวณหน้าตลาดเทเวศร์<br>" +
+                "• สามารถเดินเท้าเชื่อมต่อไปยังสี่แยกเทเวศร์และถนนสามเสนได้สะดวก<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• สถานที่ใกล้เคียง: ตลาดเทเวศร์ (แหล่งขายต้นไม้ ดอกไม้ และตลาดสดชื่อดัง)<br>" +
+                "• สถานที่ใกล้เคียง: มหาวิทยาลัยเทคโนโลยีราชมงคลพระนคร (ศูนย์เทเวศร์)<br>" +
+                "• สิ่งอำนวยความสะดวก: ใกล้แหล่งร้านอาหารและสิ่งอำนวยความสะดวกพื้นฐาน<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    },
+    10: { 
+        name: "ท่าเรือตลาดเทวราช", 
+        image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600", 
+        detail: "<b>1. จุดเชื่อมต่อการเดินทางสำคัญ</b><br>" +
+                "• จุดสิ้นสุดเส้นทาง (ปลายสาย) ของการเดินเรือคลองผดุงกรุงเกษม<br>" +
+                "• จุดเชื่อมต่อสำคัญ: เดินเท้าต่อไปยัง ท่าเรือด่วนเจ้าพระยา (ท่าเทเวศร์) เพื่อสัญจรทางน้ำหลัก<br><br>" +
+                "<b>2. ข้อมูลบริการและสิ่งอำนวยความสะดวก</b><br>" +
+                "• สถานที่ใกล้เคียง: ตลาดเทวราชฝั่งเหนือ, สโมสรทหารบก (เทเวศร์)<br>" +
+                "• สถานที่ใกล้เคียง: วังเทเวศร์ และพื้นที่ริมแม่น้ำเจ้าพระยา<br>" +
+                "• สิ่งอำนวยความสะดวก: มีจุดบริการให้ข้อมูลและเจ้าหน้าที่อำนวยความสะดวกในการเปลี่ยนถ่ายการเดินทาง<br><br>" +
+                "<b>3. เวลาเปิดให้บริการ (ฟรี)</b><br>" +
+                "• วันจันทร์ - ศุกร์: 06.00 - 19.00 น. (เรือออกทุก 15-20 นาที)<br>" +
+                "• วันเสาร์ - อาทิตย์ และวันหยุดนักขัตฤกษ์: 08.00 - 19.00 น."
+    }
+};
+
+        const pierNodes = document.querySelectorAll('.pier-node');
+        const popupOverlay = document.getElementById('popupOverlay');
+        const popupName = document.getElementById('popupName');
+        const popupImg = document.getElementById('popupImg');
+        const popupDetail = document.getElementById('popupDetail');
+        const closeBtn = document.getElementById('closeBtn');
+
+        pierNodes.forEach(node => {
+            node.addEventListener('click', () => {
+                const id = node.getAttribute('data-id');
+                const data = pierData[id];
+
+                if (data) {
+                    popupName.textContent = data.name;
+                    popupImg.src = data.image;
+                    popupDetail.innerHTML = data.detail; 
+                    popupOverlay.classList.add('active');
+                }
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            popupOverlay.classList.remove('active');
+        });
+
+        popupOverlay.addEventListener('click', (e) => {
+            if (e.target === popupOverlay) {
+                popupOverlay.classList.remove('active');
+            }
+        });
+
+        function switchTab(tabId) {
+        // ซ่อนเนื้อหาทุกแท็บ
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        // เอาสถานะ active ออกจากปุ่มทั้งหมด
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // แสดงแท็บและเปลี่ยนสถานะปุ่มที่เลือก
+        document.getElementById(tabId).classList.add('active');
+        if (tabId === 'weekday') {
+            document.querySelector('.btn-weekday').classList.add('active');
+        } else {
+            document.querySelector('.btn-weekend').classList.add('active');
+        }
+    }
+
+    // ดึง Element ปุ่ม และ กล่องเมนู
+const menuToggle = document.getElementById('menuToggle');
+const navWrapper = document.getElementById('navWrapper');
+
+// เมื่อคลิกปุ่ม Hamburger ให้สลับเปิด-ปิดเมนู
+menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    navWrapper.classList.toggle('active');
+});
+
+// เสริม: ถ้าผู้ใช้กดคลิกที่ลิงก์เมนูใดๆ ให้ปิดแถบเมนูอัตโนมัติด้วย
+const navLinks = navWrapper.querySelectorAll('a');
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        navWrapper.classList.remove('active');
+    });
+});
+    </script>
+</body>
+</html>

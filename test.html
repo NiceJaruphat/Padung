@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title><!-- ปรับปรุงสไตล์ CSS สำหรับ Popup ใหม่ -->
+    <style>
+        /* ... (CSS ส่วนอื่นคงเดิมไว้) ... */
+
+        /* สไตล์ Popup ใหม่ตามแบบในรูปภาพ image_7711e0.jpg */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .popup-content {
+            background: #ffffff;
+            border-radius: 32px; /* ขอบโค้งมนตามรูป */
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden; /* บังคับให้รูปภาพโค้งตามขอบด้านบน */
+        }
+
+        .popup-overlay.active .popup-content {
+            transform: translateY(0);
+        }
+
+        /* ส่วนแสดงรูปภาพด้านบน */
+        .popup-image-container {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            background-color: #e2e8f0;
+        }
+
+        .popup-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ส่วนกล่องข้อความด้านล่าง */
+        .popup-body {
+            padding: 30px;
+            text-align: left;
+        }
+
+        .popup-title {
+            color: #000000;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .popup-detail {
+            color: #334155;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .popup-detail b {
+            color: #0284c7;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* ปุ่มปิดแบบมินิมอล */
+        .close-btn {
+            background-color: #f1f5f9;
+            color: #64748b;
+            border: none;
+            padding: 10px 0;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background-color: #e2e8f0;
+            color: #334155;
+        }
+    </style>
+
+</head>
+<body>
+    !-- โครงสร้าง HTML ของ Popup ใหม่ -->
+<div class="popup-overlay" id="popupOverlay">
+    <div class="popup-content">
+        <!-- ส่วนรูปภาพหัวป็อปอัพ -->
+        <div class="popup-image-container">
+            <img class="popup-image" id="popupImg" src="" alt="ภาพสถานที่">
+        </div>
+        
+        <!-- ส่วนรายละเอียด -->
+        <div class="popup-body">
+            <h2 class="popup-title" id="popupName">ชื่อท่าเรือ</h2>
+            <div class="popup-detail" id="popupDetail">
+                รายละเอียด...
+            </div>
+            <button class="close-btn" id="closeBtn">ปิด</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+<
