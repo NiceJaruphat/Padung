@@ -633,3 +633,58 @@ nav {
         margin-bottom: 25px;
     }
 }
+/* ==========================================================================
+   8. BOAT COMPARISON SECTION (.comparison-container)
+   ========================================================================== */
+.comparison-container {
+    width: 100%;
+    max-width: 800px; /* จำกัดความกว้างสูงสุดไม่ให้รูปขยายจนแตก */
+    background-color: #ffffff;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    margin: 30px auto;
+    text-align: center;
+}
+
+.comparison-title {
+    font-size: 20px;
+    color: #0c4a6e;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.comparison-img-wrapper {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    overflow: hidden; /* บังคับให้มุมรูปโค้งตามคอนเทนเนอร์ */
+    display: flex;
+    justify-content: center;
+}
+
+.comparison-container img {
+    width: 100%;
+    max-width: 550px; /* จำกัดขนาดรูปอินโฟกราฟิกให้อ่านง่ายพอดีสายตาบนคอม */
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+/* เพิ่มลูกเล่นขยายเล็กน้อยเวลาเอาเมาส์มาชี้ที่รูป (ถ้าไม่ชอบลบออกได้ครับ) */
+.comparison-container img:hover {
+    transform: scale(1.02);
+}
+
+/* ปรับระยะและขนาดตัวอักษรเมื่อเปิดบนหน้าจอ Tablet / Computer */
+@media (min-width: 768px) {
+    .comparison-container {
+        padding: 35px;
+    }
+    
+    .comparison-title {
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+}
